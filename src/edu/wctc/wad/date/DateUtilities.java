@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 
 /**
@@ -31,7 +32,11 @@ public class DateUtilities {
      * @return a LocalDateTime object with the date and time parsed from the String
      *           value that is entered by user
      */
-    public LocalDateTime stringToLocalDateTime(String stringToFormatToDate) {
+    public LocalDateTime stringToLocalDateTime(String stringToFormatToDate) 
+            throws IllegalArgumentException {
+        if (stringToFormatToDate == null || stringToFormatToDate.isEmpty()) {
+            throw new IllegalArgumentException("String to format to date cannot be null");
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime dateTime = LocalDateTime.parse(stringToFormatToDate, formatter);
         return dateTime;
@@ -45,7 +50,11 @@ public class DateUtilities {
      * @return - a String that is formatted into pattern "yyyy-MM-dd" 
      *              from a LocalDateTime object
      */
-    public String localDateTimeToString(LocalDateTime dateTime) {
+    public String localDateTimeToString(LocalDateTime dateTime) 
+            throws IllegalArgumentException {
+        if (dateTime == null) {
+            throw new IllegalArgumentException("date time cannot be null");
+        }
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return df.format(dateTime);
     } 
@@ -58,7 +67,11 @@ public class DateUtilities {
      * 
      * @return - the difference in Days as a long between two LocalDateTime objects
      */
-    public long findDifferenceInDays(LocalDateTime start, LocalDateTime end) {
+    public long findDifferenceInDays(LocalDateTime start, LocalDateTime end) 
+            throws IllegalArgumentException {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("start and end dates cannot be null");
+        }
         Duration duration = Duration.between(start, end);
         return duration.toDays();
     }
@@ -71,7 +84,11 @@ public class DateUtilities {
      * 
      * @return - the difference in Hours as a long between two LocalDateTime objects
      */
-    public long findDifferenceInHours(LocalDateTime start, LocalDateTime end) {
+    public long findDifferenceInHours(LocalDateTime start, LocalDateTime end) 
+            throws IllegalArgumentException {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("start and end dates cannot be null");
+        }
         Duration duration = Duration.between(start, end);
         return duration.toHours();
     }
@@ -84,7 +101,11 @@ public class DateUtilities {
      * 
      * @return - the difference in Minutes as a long between two LocalDateTime objects
      */
-    public long findDifferenceInMinutes(LocalDateTime start, LocalDateTime end) {
+    public long findDifferenceInMinutes(LocalDateTime start, LocalDateTime end) 
+            throws IllegalArgumentException {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("start and end dates cannot be null");
+        }
         Duration duration = Duration.between(start, end);
         return duration.toMinutes();
     }
@@ -98,7 +119,11 @@ public class DateUtilities {
      * 
      * @return - a String formatted from a LocalDateTime
      */
-    public String getFormattedDateXAmountOfDaysInFuture(long daysInFuture) {
+    public String getFormattedDateXAmountOfDaysInFuture(long daysInFuture) 
+            throws IllegalArgumentException {
+        if (daysInFuture < 0) {
+            throw new IllegalArgumentException("Days in future cannot be less than zero");
+        }
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime localDate = LocalDateTime.now().plusDays(daysInFuture);
         return df.format(localDate);
@@ -113,7 +138,11 @@ public class DateUtilities {
      * 
      * @return - a String formatted from a LocalDateTime
      */
-    public String getDateXAmountOfMonthsInFuture(long monthsInFuture) {
+    public String getDateXAmountOfMonthsInFuture(long monthsInFuture) 
+            throws IllegalArgumentException {
+        if (monthsInFuture < 0) {
+            throw new IllegalArgumentException("Months in future cannot be less than zero");
+        }
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime localDate = LocalDateTime.now().plusMonths(monthsInFuture);
         return df.format(localDate);
@@ -127,7 +156,11 @@ public class DateUtilities {
      * 
      * @return - a String formatted from a LocalDateTime 
      */
-    public String getFormattedDateXAmountOfDaysInPast(long daysInPast) {
+    public String getFormattedDateXAmountOfDaysInPast(long daysInPast) 
+            throws IllegalArgumentException {
+        if (daysInPast < 0) {
+            throw new IllegalArgumentException("Days in past cannot be less than zero");
+        }
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime localDate = LocalDateTime.now().minusDays(daysInPast);
         return df.format(localDate);
@@ -140,11 +173,35 @@ public class DateUtilities {
      *                       that user wants the returned date (in String format) to be
      * 
      * @return - a String formatted from a LocalDateTime
+     * 
      */
-    public String getFormattedDateXAmountOfMonthsInPast(long monthsInPast) {
+    
+    public String getFormattedDateXAmountOfMonthsInPast(long monthsInPast) 
+            throws IllegalArgumentException {
+        if (monthsInPast < 0){
+            throw new IllegalArgumentException("Months in past cannot be less than zero");
+        }
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime localDate = LocalDateTime.now().minusDays(monthsInPast);
         return df.format(localDate);
     }
+    
+    /**
+     * Finds the last day of the month for the LocalDate passed to the method
+     * i.e.: LocalDate 2000-12-1 passed in would return 2000-12-31 
+     * 
+     * @param date - a LocalDate object
+     * 
+     * @return a LocalDate object of last day of the month of the LocalDate passed
+     * 
+     * @throws IllegalArgumentException 
+     */
+    public LocalDate getLastDayOfMonth(LocalDate date) throws IllegalArgumentException {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        return date.with(TemporalAdjusters.lastDayOfMonth());
+    }  
+    
     
 }
