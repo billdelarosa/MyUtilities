@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import javax.swing.text.DateFormatter;
 
 
 /**
@@ -203,5 +204,14 @@ public class DateUtilities {
         return date.with(TemporalAdjusters.lastDayOfMonth());
     }  
     
-    
+    /**
+     * Simple method to return the current date and time (military) formatted as a String
+     * 
+     * @return String with current date and time formatted as "yyyy-MM-dd HH:mm"
+     */
+    public String getCurrentDateAndTime() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime ldt = LocalDateTime.now();
+        return df.format(ldt);
+    }
 }
